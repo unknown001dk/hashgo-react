@@ -1,5 +1,4 @@
 #testimonials {
-  /* background: #f4f4f4; */
   padding: 50px 0;
   text-align: center;
 }
@@ -10,9 +9,6 @@
   gap: 20px;
   justify-content: center;
 }
-.testimonial-item p {
-  margin-bottom: 20px;
-}
 
 .testimonial-item {
   background: #fff;
@@ -20,4 +16,16 @@
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 300px;
+  opacity: 0; /* Hidden initially */
+  transform: translateY(30px); /* Start below its final position */
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.testimonial-item.visible {
+  opacity: 1; /* Fade in */
+  transform: translateY(0); /* Slide to position */
+}
+
+.testimonial-item p {
+  margin-bottom: 20px;
 }

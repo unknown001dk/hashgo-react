@@ -15,15 +15,28 @@ function RegisterModal({ closeModal }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Make an API request with axios
-    axios
-      .post(import.meta.env.VITE_API_URL, formData)
-      .then((response) => {
-        toast.success("Registration successful!");
+
+    // fetch the registration
+    fetch(import.meta.env.VITE_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        if (data.success === true) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
         closeModal();
       })
       .catch((error) => {
-        toast.error("An error occurred. Please try again.");
+        console.error("Error:", error);
+        toast.error("Error registering. Please try again later.");
       });
   };
 
@@ -42,7 +55,6 @@ function RegisterModal({ closeModal }) {
             name="name"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
           />
 
           <label htmlFor="email">Email</label>
@@ -51,8 +63,9 @@ function RegisterModal({ closeModal }) {
             id="email"
             name="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            required
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
           />
 
           <label htmlFor="phonenumber">Phone Number</label>
@@ -64,7 +77,6 @@ function RegisterModal({ closeModal }) {
             onChange={(e) =>
               setFormData({ ...formData, phoneNumber: e.target.value })
             }
-            required
           />
 
           <label htmlFor="course">Select Course:</label>
@@ -75,9 +87,10 @@ function RegisterModal({ closeModal }) {
             onChange={(e) =>
               setFormData({ ...formData, course: e.target.value })
             }
-            required
           >
-            <option value="10 Projects in 15 Days">10 Projects in 15 Days</option>
+            <option value="10 Projects in 15 Days">
+              10 Projects in 15 Days
+            </option>
           </select>
 
           <button type="submit">Register</button>
@@ -87,4 +100,4 @@ function RegisterModal({ closeModal }) {
   );
 }
 
-export default RegisterModal; // Make sure this is the default export
+export default RegisterModal;
